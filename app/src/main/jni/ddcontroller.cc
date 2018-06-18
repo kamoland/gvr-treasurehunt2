@@ -40,7 +40,9 @@ void DaydreamController::OnResume() {
   int32_t options = gvr::ControllerApi::DefaultOptions();
   options |= GVR_CONTROLLER_ENABLE_GYRO;
   options |= GVR_CONTROLLER_ENABLE_ACCEL;
+  // ARMモデルを許可する
   options |= GVR_CONTROLLER_ENABLE_ARM_MODEL;
+
   CHECK(controller_api_->Init(options, gvr_context_));
 
   if (controller_api_) {
@@ -67,6 +69,7 @@ void DaydreamController::UpdateController() {
 
   gvr::Mat4f head_view = gvr_api_->GetHeadSpaceFromStartSpaceTransform(pred_time);
 
+  // ARMモデルを適用する
   controller_api_->ApplyArmModel(GVR_CONTROLLER_RIGHT_HANDED, GVR_ARM_MODEL_FOLLOW_GAZE, head_view);
 
   controller_state_.Update(*controller_api_);
